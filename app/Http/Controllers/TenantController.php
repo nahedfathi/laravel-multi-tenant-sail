@@ -1,7 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 
-class TenantDataController extends Controller
+class TenantController extends Controller
 {
     public function index()
     {

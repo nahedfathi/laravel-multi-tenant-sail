@@ -11,8 +11,8 @@ class TenantSeeder extends Seeder
     public function run(): void
     {
         $tenants = [
-            ['name' => 'Tenant 3'],
-            ['name' => 'Tenant 4'],
+            ['name' => 'Tenant 1'],
+            ['name' => 'Tenant 2'],
         ];
 
         foreach ($tenants as $data) {

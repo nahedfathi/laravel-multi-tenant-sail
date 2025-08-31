@@ -6,11 +6,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Job;
-use Illuminate\Foundation\Queue\Queueable;
 
 class JobCreatedEvent implements ShouldQueue
 {
-    use Dispatchable, Queueable, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public Job $job;
 

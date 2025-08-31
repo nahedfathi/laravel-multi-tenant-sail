@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\JobCreatedEvent;
+use App\Http\Requests\StoreJobRequest;
+use App\Http\Resources\JobResource;
 use App\Jobs\SyncJobToElasticsearch;
 use App\Models\Job;
 use Illuminate\Http\Request;
@@ -14,37 +16,39 @@ class JobController extends Controller
      */
     public function index()
     {
-        return response()->json(Job::all());
+        return response()->json([
+            'status' => 'success',
+            'data'   => JobResource::collection(Job::latest()->paginate(10)),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreJobRequest $request)
     {
-        $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'location'    => 'nullable|string|max:255',
-        ]);
+        $job = Job::create($request->validated());
 
-        $job = Job::create($data);
         SyncJobToElasticsearch::dispatchAfterResponse($job);
-        JobCreatedEvent::dispatchAfterResponse($job);
+        event(new JobCreatedEvent($job));
         return response()->json([
             'status'  => 'success',
             'message' => 'Job created successfully!',
-            'data'    => $job,
-        ]);
+            'data'    => new JobResource($job),
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Job $job)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'data'   => new JobResource($job),
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.

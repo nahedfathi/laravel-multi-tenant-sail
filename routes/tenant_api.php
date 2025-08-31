@@ -1,23 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\TenantAuthController;
+use App\Http\Controllers\Tenant\UserAuthController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\TenantDataController;
+use App\Http\Controllers\TenantController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 
 Route::middleware(['api',InitializeTenancyByPath::class,"universal"])->group(function(){
 
     Route::prefix('auth')->group(function () {
-        Route::post('register', [TenantAuthController::class, 'register']);
-        Route::post('login', [TenantAuthController::class, 'login']);
+        Route::post('register', [UserAuthController::class, 'register']);
+        Route::post('login', [UserAuthController::class, 'login']);
     });
 
     Route::middleware('auth:api')->group(function () {
         Route::get('/me', function () {
             return auth()->user();
         });
-        Route::get('/tenant-data', [TenantDataController::class, 'index']);
+        Route::get('/tenant-data', [TenantController::class, 'index']);
         // Jobs APIs
         Route::prefix('jobs')->group(function () {
             Route::post('/', [JobController::class, 'store']);  
