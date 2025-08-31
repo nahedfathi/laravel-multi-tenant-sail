@@ -21,6 +21,7 @@ Available APIs: user register , user login , user profile , tenant information ,
 
 ******
 installations
+
 -git clone git@github.com:nahedfathi/laravel-multi-tenant-sail.git
 -cd laravel-multi-tenant-sail
 -./vendor/bin/sail up -d
